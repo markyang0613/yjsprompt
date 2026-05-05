@@ -1,0 +1,426 @@
+:root {
+  --bg-primary: #1a1a2e;
+  --bg-surface: #16213e;
+  --bg-card: #0f3460;
+  --accent: #e94560;
+  --accent-hover: #ff5872;
+  --text-primary: #eaeaea;
+  --text-secondary: #a0a0b0;
+  --border: #2a2a4a;
+  --success: #4ecca3;
+  --danger: #ff6b6b;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding: 0;
+}
+
+/* Header --------------------------------------------------------------- */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.brand-mark {
+  font-size: 18px;
+  filter: drop-shadow(0 0 6px rgba(233, 69, 96, 0.55));
+}
+
+.brand-name {
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.icon-button {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 120ms ease, color 120ms ease,
+    border-color 120ms ease, transform 120ms ease;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-primary);
+  border-color: var(--border);
+  outline: none;
+}
+
+.icon-button[aria-expanded="true"] {
+  color: var(--accent);
+}
+
+/* Settings panel ------------------------------------------------------- */
+
+.settings-panel {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 16px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 220ms ease, opacity 200ms ease,
+    padding 220ms ease;
+}
+
+.settings-panel.is-open {
+  max-height: 320px;
+  opacity: 1;
+  padding: 14px 16px 16px;
+}
+
+.settings-panel[hidden] {
+  display: block; /* override default so transitions still play */
+}
+
+.settings-title {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.field-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.field-row .text-input {
+  flex: 1;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin: 8px 0 0;
+}
+
+.hint code {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 11.5px;
+}
+
+.settings-status {
+  margin: 8px 0 0;
+  font-size: 12px;
+  min-height: 16px;
+  color: var(--success);
+}
+
+.settings-status.is-error {
+  color: var(--danger);
+}
+
+/* Main / cards --------------------------------------------------------- */
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 16px 18px;
+  overflow-y: auto;
+}
+
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+/* Inputs --------------------------------------------------------------- */
+
+.text-input,
+.textarea-input,
+.select-input {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease,
+    background-color 120ms ease;
+}
+
+.text-input::placeholder,
+.textarea-input::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.text-input:focus,
+.textarea-input:focus,
+.select-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.18);
+}
+
+.textarea-input {
+  resize: vertical;
+  min-height: 96px;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.output-input {
+  background: var(--bg-card);
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-input {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--text-secondary);
+  border-bottom: 2px solid var(--text-secondary);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+/* Buttons -------------------------------------------------------------- */
+
+.button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 11px 14px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 140ms ease, border-color 140ms ease,
+    transform 80ms ease, color 140ms ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.button-primary {
+  width: 100%;
+  background: var(--accent);
+  color: #fff;
+  letter-spacing: 0.3px;
+  box-shadow: 0 6px 14px rgba(233, 69, 96, 0.28);
+}
+
+.button-primary:hover:not(:disabled),
+.button-primary:focus-visible:not(:disabled) {
+  background: var(--accent-hover);
+  outline: none;
+}
+
+.button-primary.is-loading {
+  background: #b8334a;
+  pointer-events: none;
+}
+
+.button-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border-color: var(--border);
+  align-self: flex-start;
+}
+
+.button-secondary:hover:not(:disabled),
+.button-secondary:focus-visible:not(:disabled) {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: var(--accent);
+  color: var(--accent);
+  outline: none;
+}
+
+.button-secondary.is-success {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+/* Input meta row ------------------------------------------------------- */
+
+.input-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  min-height: 16px;
+}
+
+.char-count {
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.char-count.is-warning {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.error-text {
+  color: var(--danger);
+  font-size: 12px;
+  min-height: 16px;
+  flex: 1;
+}
+
+.error-text:empty {
+  min-height: 0;
+}
+
+/* Shake animation ------------------------------------------------------ */
+
+@keyframes pl-shake {
+  0%,
+  100% { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+}
+
+.shake {
+  animation: pl-shake 360ms ease;
+  border-color: var(--danger) !important;
+  box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.18) !important;
+}
+
+/* Footer --------------------------------------------------------------- */
+
+.footer {
+  padding: 10px 16px 14px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+
+/* Scrollbar ------------------------------------------------------------ */
+
+.main::-webkit-scrollbar,
+.textarea-input::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.main::-webkit-scrollbar-track,
+.textarea-input::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main::-webkit-scrollbar-thumb,
+.textarea-input::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 6px;
+  border: 2px solid var(--bg-primary);
+}
+
+.main::-webkit-scrollbar-thumb:hover,
+.textarea-input::-webkit-scrollbar-thumb:hover {
+  background: #3a3a60;
+}
+
+/* Reduced motion ------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}

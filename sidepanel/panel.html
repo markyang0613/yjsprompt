@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>yjsprompt</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <div class="app" id="app">
+      <header class="header">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">⚡</span>
+          <span class="brand-name">yjsprompt</span>
+        </div>
+      </header>
+
+      <main class="main">
+        <section class="card">
+          <label class="field-label" for="modeSelect">Mode</label>
+          <div class="select-wrapper">
+            <select id="modeSelect" class="select-input">
+              <option value="general">General</option>
+              <option value="coding">Coding</option>
+              <option value="writing">Writing</option>
+              <option value="analysis">Analysis</option>
+              <option value="brainstorming">Brainstorming</option>
+              <option value="research">Research</option>
+            </select>
+          </div>
+        </section>
+
+        <section class="card">
+          <label class="field-label" for="rawInput">What do you want?</label>
+          <textarea
+            id="rawInput"
+            class="textarea-input"
+            rows="5"
+            maxlength="1000"
+            placeholder="Write anything naturally... e.g. 'help me fix a bug in my python code'"
+          ></textarea>
+          <div class="input-meta">
+            <span class="error-text" id="inputError" role="alert"></span>
+            <span class="char-count" id="charCount">0 / 1000</span>
+          </div>
+          <button type="button" class="button button-primary" id="generateButton">
+            Generate Prompt
+          </button>
+        </section>
+
+        <section class="card">
+          <label class="field-label" for="output">Your optimized prompt</label>
+          <textarea
+            id="output"
+            class="textarea-input output-input"
+            rows="8"
+            readonly
+            placeholder="Your polished prompt will appear here."
+          ></textarea>
+          <p class="error-text" id="outputError" role="alert"></p>
+          <button
+            type="button"
+            class="button button-secondary"
+            id="copyButton"
+            disabled
+          >
+            <span id="copyButtonLabel">📋 Copy</span>
+          </button>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>yjsprompt v1.0.0</span>
+      </footer>
+    </div>
+
+    <script type="module" src="panel.js"></script>
+  </body>
+</html>
