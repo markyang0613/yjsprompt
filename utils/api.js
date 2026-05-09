@@ -19,19 +19,61 @@ const friendlyErrorForStatus = (status) => {
   }
 };
 
+function getLanguageHint(rawInput) {
+  const hangulCount = (rawInput.match(/[\uac00-\ud7af\u1100-\u11ff\u3130-\u318f]/g) || []).length;
+  const kanaCount = (rawInput.match(/[\u3040-\u30ff]/g) || []).length;
+  const hanCount = (rawInput.match(/[\u3400-\u9fff]/g) || []).length;
+
+  if (hangulCount > 0 && hangulCount >= kanaCount && hangulCount >= hanCount) {
+    return "Korean. Use natural Korean written primarily in Hangul. Do not use Chinese characters/Hanja or Japanese characters unless they appear in the user's request.";
+  }
+
+  if (kanaCount > 0 && kanaCount >= hangulCount && kanaCount >= hanCount) {
+    return "Japanese. Use natural Japanese. Do not use Korean Hangul or unrelated Chinese-only wording unless it appears in the user's request.";
+  }
+
+  if (hanCount > 0) {
+    return "Chinese. Use natural Chinese. Do not use Korean Hangul or Japanese kana unless they appear in the user's request.";
+  }
+
+  return "Infer from the request. Use the same primary language as the user's request.";
+}
+
+function buildLanguageAwareInput(rawInput) {
+  const languageHint = getLanguageHint(rawInput);
+
+  return `
+Rewrite the following request into an optimized prompt.
+
+Language requirement:
+- Detected/requested language: ${languageHint}
+- Detect the primary language of the request.
+- Return the optimized prompt in that same language.
+- Translate all generic prompt-engineering text, including role, instructions,
+  headings, constraints, and output-format labels, into that language.
+- Use English only when the request is primarily English, explicitly asks for
+  English, or contains technical terms that should naturally remain in English.
+- Do not use unrelated languages or scripts.
+
+Request:
+${rawInput}
+`.trim();
+}
+
 export async function generateOptimizedPrompt(rawInput, mode) {
   if (typeof rawInput !== "string" || rawInput.trim().length === 0) {
     throw new Error("Please write something first.");
   }
 
   const systemPrompt = getSystemPrompt(mode);
+  const input = buildLanguageAwareInput(rawInput.trim());
 
   let response;
   try {
     response = await fetch(ENDPOINT, {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ input: rawInput, systemPrompt }),
+      body: JSON.stringify({ input, systemPrompt }),
     });
   } catch {
     throw new Error(
